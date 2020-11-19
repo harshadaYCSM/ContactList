@@ -10,10 +10,10 @@ class UserItem extends React.Component {
     render() {
         return (
                 <tr key={this.props.user.id} id={this.props.user.id}> {this.props.user.id}
-                    <td onClick={() => {this.props.selectUser(this.props.user.id) } }>{this.props.user.name} </td>
+                    <td onClick={() => {this.props.selectUser(this.props.user["Display Name"]) } }>{this.props.user["Display Name"]} </td>
                     <td> <img src="delete.png"
                         className="btn-del"
-                        onClick={() => { if (window.confirm('Are you sure to delete this user?')) this.props.deleteUser(this.props.user.id) } }></img></td>
+                        onClick={() => { if (window.confirm('Are you sure to delete this user?')) this.props.deleteUser(this.props.user["Display Name"]) } }></img></td>
                     <td>
                     {/* <button 
                         className="btn-select"

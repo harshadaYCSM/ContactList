@@ -29,12 +29,11 @@ class UserDetails extends React.Component {
 render() {
     return (
         <ul> Selected User Details :
-          <li>Name: {this.props.selectedUser.name}</li>
-          <li>Email Id: {this.props.selectedUser.email}</li>
-          <li>Website: {this.props.selectedUser.website}</li>
-          <li>Contact: {this.props.selectedUser.phone}</li>
-          <li>City: {this.props.selectedUser.address.city}</li>
-          <li>Compny Name: {this.props.selectedUser.company.name}</li>
+          <li>Name: {this.props.selectedUser["Display Name"]}</li>
+          <li>Email Id: {this.props.selectedUser["E-mail Address"]}</li>
+          <li>Contact: {this.props.selectedUser["Home Phone"]}</li>
+          <li>City: {this.props.selectedUser["Home City"]}</li>
+          <li>Compny Name: {this.props.selectedUserOrganization}</li>
         </ul>
     )
 }
