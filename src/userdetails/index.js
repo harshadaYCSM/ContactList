@@ -1,42 +1,53 @@
 import React from 'react';
+import './index.css'
+import LoaderPercent from '.././loader'
 
 class UserDetails extends React.Component {
     constructor(props) {
-        super(props)
+      super(props)
+      console.log("i am in constructor")
+      this.state = {
+        loading : true
+      }
+    }
+    componentDidUpdate() {
+      console.log("i am in componentDidUpdatethis.state.loading :" + this.state.loading)
+      if (this.state.loading === true && this.props.isShow) {
+        this.setState({loading: false})
+      }
     }
 
-    /* userDetailsRender(selectedID) {
-        if (this.state.displayDetails) {
-          if(this.newList) {
-            this.selectedUserId = selectedID+1;
-          } 
-          else {
-            this.userDetails =(
-            <div className="userDetail">
-              <ul>  Selected User Details :
-                <li>Name: {this.props.users[selectedID].name}</li>
-                <li>Email Id: {this.props.users[selectedID].email}</li>
-                <li>Website: {this.props.users[selectedID].website}</li>
-                <li>Contact: {this.props.users[selectedID].phone}</li>
-                <li>City: {this.props.users[selectedID].address.city}</li>
-                <li>Compny Name: {this.props.users[selectedID].company.name}</li>
-            </ul>
-          </div>)
-        }
-      }
-    } */
+    componentWillUpdate() {
+      this.state.loading = true
+      console.log("i am in componentWillUpdatethis.state.loading :" + this.state.loading)
+    }
 
-render() {
-    return (
-        <ul> Selected User Details :
-          <li>Name: {this.props.selectedUser["Display Name"]}</li>
-          <li>Email Id: {this.props.selectedUser["E-mail Address"]}</li>
-          <li>Contact: {this.props.selectedUser["Home Phone"]}</li>
-          <li>City: {this.props.selectedUser["Home City"]}</li>
-          <li>Compny Name: {this.props.selectedUserOrganization}</li>
-        </ul>
-    )
-}
+    componentDidMount() {
+      console.log("i am in componentDidMount this.state.loading :" + this.state.loading)
+    }
+
+    render() {
+      console.log("i am in render")
+      return (
+        <div className="user-details">
+          {this.props.isShow ? ((this.state.loading ? (<ul>Loading............</ul>) :
+          (<div className="details">
+            <ul> Selected User Details :
+            <li>Name: {this.props.selectedUser["Display Name"]}</li>
+            <li>Email Id: {this.props.selectedUser["E-mail Address"]}</li>
+            <li>Contact: {this.props.selectedUser["Home Phone"]}</li>
+            <li>City: {this.props.selectedUser["Home City"]}</li>
+            <li>Compny Name: {this.props.selectedUserOrganization}</li>
+          </ul>
+            </div>) 
+          )) : <ul>Selct user</ul>
+        }
+        </div> 
+      )
+  }
 }
 
 export default UserDetails
+
+
+

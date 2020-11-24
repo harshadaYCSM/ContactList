@@ -17,43 +17,30 @@ class UserList extends React.Component{
           isFilter: false
           }
       this.searchList = this.searchList.bind(this);
+      this.serialNumber = 0
     }
   
     searchList(e) {
-      // Variable to hold the original version of the list
-  let currentList = [];
-      // Variable to hold the filtered list before putting into state
-  let newList = [];
+    let currentList = [];
+    let newList = [];
 
-      // If the search bar isn't empty
-  if (e.target.value !== "") {
-          // Assign the original list to currentList
-    currentList = this.state.userList;
-
-          // Use .filter() to determine which items should be displayed
-          // based on the search terms
-    newList = currentList.filter(item => {
-              // change current item to lowercase
-      const lc = item["Display Name"].toLowerCase();
-              // change search term to lowercase
-      const filter = e.target.value.toLowerCase();
-              // check to see if the current list item includes the search term
-              // If it does, it will be added to newList. Using lowercase eliminates
-              // issues with capitalization in search terms and search content
-      return lc.includes(filter);
-    });
-  } else {
-          // If the search bar is empty, set newList to original task list
-    newList = this.state.userList;
-  }
-      // Set the filtered state based on what our rules added to newList
-  this.setState({
+    if (e.target.value !== "") {
+      currentList = this.state.userList;
+      newList = currentList.filter(item => {
+      const itemName = item["Display Name"].toLowerCase();
+      const searchKey = e.target.value.toLowerCase();
+      return itemName.includes(searchKey);
+      });
+    } else {
+      newList = this.state.userList;
+    }
+    this.setState({
     filtered: newList,
     isFilter: true
   });
 }
     getUsers() {
-      fetch('./contacts_file.json')
+      fetch('./ContactList/contacts_file.json')
         .then(response => response.json())
         .then(json => {
           console.log(json)
@@ -61,26 +48,35 @@ class UserList extends React.Component{
         })
     }
 
-    deleteUser(i) {
+    deleteUser(name,i) {
       /* const fetchURL = 'https://jsonplaceholder.typicode.com/users/'+ i;
       const newData = fetch(fetchURL, {
           method: 'DELETE',
          }) */
-         this.newList = this.state.userList.filter(function(ele){ return ele["Display Name"] !== i; });
+         this.newList = this.state.userList.filter(function(ele){ return ele["Display Name"] !== name; });
          this.setState({userList: this.newList})
     }
 
-    selectUser(i) {
-      /* if (this.selectedUser) {
+    selectUser(name,i) {
+      if (this.selectedUser) {
         document.getElementById(this.selectedUser.id ).style.background = "none"
-      } */
-      this.selectedUser = this.state.userList.find((ele) => ele["Display Name"] === i)
-      //document.getElementById(i).style.background = "#91a9ec"
+      }
+      this.selectedUser = this.state.userList.find((ele) => ele["Display Name"] === name)
+      this.selectedUser.id = i
+      document.getElementById(i).style.background = "#91a9ec"
+      document.getElementsByClassName('user-details')[0].style.backgroundImage = "url('loader.gif')";
+      document.getElementsByClassName('user-details')[0].style.color= "rgb(189, 183, 228)"
+
+      // document.getElementsByClassName('user-details')[0].innerHTML = "Loading..."
+      setTimeout(() => {
+        document.getElementsByClassName('user-details')[0].style.background = "rgb(189, 183, 228)"
+        document.getElementsByClassName('user-details')[0].style.color= "black"
+    }, 300)
+      // document.getElementsByClassName('user-details')[0].style.animationDuration = "4s"
       this.setState({displayDetails:true})
     }
 
     addUser() {
-      
       console.log("add user" + document.querySelector(".user-list"))
       let personName = window.prompt("Please enter name")
       let newId = this.state.userList.length + 1
@@ -130,17 +126,18 @@ class UserList extends React.Component{
      render() {
       return(
         <div>
-        <div className="user-list">
-        <input type="text" className="input" onChange={this.searchList} placeholder="Search..." />
-        {this.state.isData ? (this.state.isFilter ? this.state.filtered.map((user) => <UserItem user={user} selectUser={this.selectUser.bind(this)} deleteUser={this.deleteUser.bind(this)}/>)  : this.state.userList.map((user) => <UserItem user={user} selectUser={this.selectUser.bind(this)} deleteUser={this.deleteUser.bind(this)}/>)) : 
-        (<LoaderPercent />)}
-        <button onClick={this.addUser.bind(this)}> Add User </button>
+          <input type="text" className="search-box" onChange={this.searchList} placeholder="Search..." />
+          <div className="user-list">
+            {this.state.isData ? (this.state.isFilter ? 
+            this.state.filtered.map((user,index) => <UserItem user={user} id={index} 
+            selectUser={this.selectUser.bind(this)} deleteUser={this.deleteUser.bind(this)}/>)  : 
+            this.state.userList.map((user,index) => <UserItem user={user} id={index}    
+            selectUser={this.selectUser.bind(this)} deleteUser={this.deleteUser.bind(this)}/>)) : 
+            (<LoaderPercent />)}
+            <button onClick={this.addUser.bind(this)}> Add User </button>
         </div>
-        <div className="user-details">
-        {this.state.displayDetails ? <UserDetails selectedUser={this.selectedUser}/> : <div>Select any user to see details</div>}
-        </div>
-        </div>
-        
+          <UserDetails selectedUser={this.selectedUser} isShow={this.state.displayDetails} />
+      </div>
       )
     }
   }

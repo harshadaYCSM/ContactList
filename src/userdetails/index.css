@@ -1,0 +1,22 @@
+.user-details {
+    border: 5px;
+    border-style: solid;
+    border-color: indigo;
+    border-radius: 2px;
+    display: inline-block;
+    position: fixed;
+    margin-top: 40px;
+    margin-left: 100px;
+    padding: 20px;
+    width: 500px;
+    background-color: #bdb7e4;
+    animation-name: example;
+    animation-duration: 4s;
+}
+
+@keyframes example {
+    from {background-color:  #bdb7e4;}
+    to {background-color: #a399e0;}
+  }
+
+ 

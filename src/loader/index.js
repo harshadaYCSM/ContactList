@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.css'
 
 let count = 0;
 let timerS ;
@@ -13,9 +14,8 @@ function loaderPercent() {
     }, 200)
 
     return (
-        <div>
-            <div id="countDisplay"></div>
-            <img src="loader.gif" id="loader"></img>
+        <div id="countDisplay">
+            <img src="./ContactList/loader.gif" id="loader"></img>
         </div>
     )
 }
