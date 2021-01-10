@@ -31,7 +31,7 @@ class UserDetails extends React.Component {
       return (
         <div className="user-details">
           {this.props.isShow ? ((this.state.loading ? (<ul>Loading............</ul>) :
-          (<div className="details">
+          (<div className="bg-gradient-to-r from-indigo-500 ...">
             <ul> Selected User Details :
             <li>Name: {this.props.selectedUser["Display Name"]}</li>
             <li>Email Id: {this.props.selectedUser["E-mail Address"]}</li>

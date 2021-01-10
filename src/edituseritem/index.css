@@ -1,5 +1,5 @@
 .btn-del {
-    height: 30px;
+    height: 25px;
     padding: 5px;
     border-radius: 5px; 
     box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24); 
@@ -9,7 +9,7 @@
 }
 
 .btn-ed {
-  height: 30px;
+  height: 25px;
   padding: 5px;
   border-radius: 5px; 
   box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24); 

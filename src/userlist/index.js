@@ -14,7 +14,9 @@ class UserList extends React.Component{
           isData: false,
           displayDetails : false,
           filtered: null,
-          isFilter: false
+          isFilter: false,
+          editUser : false,
+          editUserId : null
           }
       this.searchList = this.searchList.bind(this);
       this.serialNumber = 0
@@ -57,6 +59,14 @@ class UserList extends React.Component{
          this.setState({userList: this.newList})
     }
 
+    updateUser(user,id) {
+      console.log("updated")
+      this.setState({editUser: false, editUserId : null})
+    }
+    editUser(user,id) {
+      console.log("edit user" + user + id)
+      this.setState({editUser: true, editUserId : id})
+    }
     selectUser(name,i) {
       if (this.selectedUser) {
         document.getElementById(this.selectedUser.id ).style.background = "none"
@@ -129,11 +139,18 @@ class UserList extends React.Component{
           <input type="text" className="search-box" onChange={this.searchList} placeholder="Search..." />
           <div className="user-list">
             {this.state.isData ? (this.state.isFilter ? 
-            this.state.filtered.map((user,index) => <UserItem user={user} id={index} 
-            selectUser={this.selectUser.bind(this)} deleteUser={this.deleteUser.bind(this)}/>)  : 
-            this.state.userList.map((user,index) => <UserItem user={user} id={index}    
-            selectUser={this.selectUser.bind(this)} deleteUser={this.deleteUser.bind(this)}/>)) : 
+            this.state.filtered.map((user,index) => 
+            <UserItem user={user} id={index} selectUser={this.selectUser.bind(this)} 
+            deleteUser={this.deleteUser.bind(this)} editUser={this.editUser.bind(this)} 
+            editMode={this.state.editUser} editUserId={this.state.editUserId} 
+            updateUser={this.updateUser.bind(this)} />)  : 
+            this.state.userList.map((user,index) => 
+            <UserItem user={user} id={index} selectUser={this.selectUser.bind(this)}
+            deleteUser={this.deleteUser.bind(this)} editUser={this.editUser.bind(this)}
+            editMode={this.state.editUser} editUserId={this.state.editUserId} 
+            updateUser={this.updateUser.bind(this)} />)) : 
             (<LoaderPercent />)}
+            
             <button onClick={this.addUser.bind(this)}> Add User </button>
         </div>
           <UserDetails selectedUser={this.selectedUser} isShow={this.state.displayDetails} />
