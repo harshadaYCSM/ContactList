@@ -59,29 +59,32 @@ class UserList extends React.Component{
          this.setState({userList: this.newList})
     }
 
-    updateUser(user,id) {
-      console.log("updated")
+    updateUser(user,id,updatedVal) {
+      console.log("updated", user,id,updatedVal)
+      this.editedUserIndex = this.state.userList.findIndex((ele) => ele["Display Name"] === user)
+      this.state.userList[this.editedUserIndex]["Display Name"] = updatedVal
       this.setState({editUser: false, editUserId : null})
     }
+
     editUser(user,id) {
       console.log("edit user" + user + id)
       this.setState({editUser: true, editUserId : id})
     }
     selectUser(name,i) {
-      if (this.selectedUser) {
+      /* if (this.selectedUser) {
         document.getElementById(this.selectedUser.id ).style.background = "none"
-      }
+      } */
       this.selectedUser = this.state.userList.find((ele) => ele["Display Name"] === name)
       this.selectedUser.id = i
-      document.getElementById(i).style.background = "#91a9ec"
+      /* document.getElementById(i).style.background = "#91a9ec"
       document.getElementsByClassName('user-details')[0].style.backgroundImage = "url('loader.gif')";
-      document.getElementsByClassName('user-details')[0].style.color= "rgb(189, 183, 228)"
+      document.getElementsByClassName('user-details')[0].style.color= "rgb(189, 183, 228)" */
 
       // document.getElementsByClassName('user-details')[0].innerHTML = "Loading..."
-      setTimeout(() => {
+      /* setTimeout(() => {
         document.getElementsByClassName('user-details')[0].style.background = "rgb(189, 183, 228)"
         document.getElementsByClassName('user-details')[0].style.color= "black"
-    }, 300)
+    }, 300) */
       // document.getElementsByClassName('user-details')[0].style.animationDuration = "4s"
       this.setState({displayDetails:true})
     }

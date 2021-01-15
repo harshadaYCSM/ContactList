@@ -29,19 +29,18 @@ class UserDetails extends React.Component {
     render() {
       console.log("i am in render")
       return (
-        <div className="user-details">
+        <div className="fixed inline-block m-36 border-solid border-4 border-indigo-500">
+          <div className="m-10">
           {this.props.isShow ? ((this.state.loading ? (<ul>Loading............</ul>) :
-          (<div className="bg-gradient-to-r from-indigo-500 ...">
-            <ul> Selected User Details :
+            (<ul> Selected User Details :
             <li>Name: {this.props.selectedUser["Display Name"]}</li>
             <li>Email Id: {this.props.selectedUser["E-mail Address"]}</li>
             <li>Contact: {this.props.selectedUser["Home Phone"]}</li>
             <li>City: {this.props.selectedUser["Home City"]}</li>
             <li>Compny Name: {this.props.selectedUserOrganization}</li>
-          </ul>
-            </div>) 
-          )) : <ul>Selct user</ul>
-        }
+          </ul>))) : ( <ul>Selct user</ul>)}
+            </div> 
+  
         </div> 
       )
   }
