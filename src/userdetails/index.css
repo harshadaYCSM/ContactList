@@ -10,9 +10,19 @@
     padding: 20px;
     width: 500px;
     background-color: #bdb7e4;
-    animation-name: example;
-    animation-duration: 4s;
 }
+
+.content {
+    transition: opacity 0.2s ease; /* Smooth transition for opacity change */
+}
+
+.content.hide {
+    opacity: 0;
+  }
+  
+  .content.show {
+    opacity: 1;
+  }
 
 @keyframes example {
     from {background-color:  #bdb7e4;}

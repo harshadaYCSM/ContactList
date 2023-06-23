@@ -3,7 +3,7 @@ import './index.css'
 
 let count = 0;
 let timerS ;
-function loaderPercent() {
+function LoaderPercent() {
     //document.getElementById("loader").style.display = "block";
     timerS = setInterval(function() {
         if (count > 99) {
@@ -27,4 +27,4 @@ function stopLoading() {
     clearInterval(timerS);
 }
 
-export default loaderPercent
+export default LoaderPercent

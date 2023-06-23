@@ -29,8 +29,8 @@ class UserDetails extends React.Component {
     render() {
       console.log("i am in render")
       return (
-        <div className="fixed inline-block m-36 border-solid border-4 border-indigo-500">
-          <div className="m-10">
+        <div className='user-details'>
+          <div className="content">
           {this.props.isShow ? ((this.state.loading ? (<ul>Loading............</ul>) :
             (<ul> Selected User Details :
             <li>Name: {this.props.selectedUser["Display Name"]}</li>
@@ -40,7 +40,6 @@ class UserDetails extends React.Component {
             <li>Compny Name: {this.props.selectedUserOrganization}</li>
           </ul>))) : ( <ul>Selct user</ul>)}
             </div> 
-  
         </div> 
       )
   }

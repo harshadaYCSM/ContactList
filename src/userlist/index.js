@@ -18,28 +18,30 @@ class UserList extends React.Component{
           editUser : false,
           editUserId : null
           }
-      this.searchList = this.searchList.bind(this);
-      this.serialNumber = 0
+      this.selectUser = this.selectUser.bind(this);
+      this.deleteUser = this.deleteUser.bind(this);
+      this.editUser = this.editUser.bind(this);
+      this.updateUser = this.updateUser.bind(this);
     }
   
-    searchList(e) {
-    let currentList = [];
-    let newList = [];
+    searchList = (e) => {
+      let currentList = [];
+      let newList = [];
 
-    if (e.target.value !== "") {
-      currentList = this.state.userList;
-      newList = currentList.filter(item => {
-      const itemName = item["Display Name"].toLowerCase();
-      const searchKey = e.target.value.toLowerCase();
-      return itemName.includes(searchKey);
-      });
-    } else {
-      newList = this.state.userList;
-    }
-    this.setState({
-    filtered: newList,
-    isFilter: true
-  });
+      if (e.target.value !== "") {
+        currentList = this.state.userList;
+        newList = currentList.filter(item => {
+        const itemName = item["Display Name"].toLowerCase();
+        const searchKey = e.target.value.toLowerCase();
+        return itemName.includes(searchKey);
+        });
+      } else {
+        newList = this.state.userList;
+      }
+      this.setState({
+      filtered: newList,
+      isFilter: true
+    });
 }
     getUsers() {
       fetch('./ContactList/contacts_file.json')
@@ -50,43 +52,35 @@ class UserList extends React.Component{
         })
     }
 
-    deleteUser(name,i) {
-      /* const fetchURL = 'https://jsonplaceholder.typicode.com/users/'+ i;
-      const newData = fetch(fetchURL, {
-          method: 'DELETE',
-         }) */
-         this.newList = this.state.userList.filter(function(ele){ return ele["Display Name"] !== name; });
-         this.setState({userList: this.newList})
+    deleteUser(name, i) {
+      const updatedUserList = this.state.userList.filter(
+        (ele) => ele["Display Name"] !== name
+      );
+      this.setState({ userList: updatedUserList });
     }
 
     updateUser(user,id,updatedVal) {
-      console.log("updated", user,id,updatedVal)
-      this.editedUserIndex = this.state.userList.findIndex((ele) => ele["Display Name"] === user)
-      this.state.userList[this.editedUserIndex]["Display Name"] = updatedVal
-      this.setState({editUser: false, editUserId : null})
+      // console.log("updated", user,id,updatedVal)
+      // this.editedUserIndex = this.state.userList.findIndex((ele) => ele["Display Name"] === user)
+      // this.state.userList[this.editedUserIndex]["Display Name"] = updatedVal
+      // this.setState({editUser: false, editUserId : null})
+      const updatedUserList = [...this.state.userList];
+      const editedUserIndex = updatedUserList.findIndex((ele) => ele["Display Name"] === user);
+      updatedUserList[editedUserIndex]["Display Name"] = updatedVal;
+      this.setState({ userList: updatedUserList, editUser: false, editUserId: null });
     }
 
     editUser(user,id) {
       console.log("edit user" + user + id)
       this.setState({editUser: true, editUserId : id})
     }
-    selectUser(name,i) {
-      /* if (this.selectedUser) {
-        document.getElementById(this.selectedUser.id ).style.background = "none"
-      } */
-      this.selectedUser = this.state.userList.find((ele) => ele["Display Name"] === name)
-      this.selectedUser.id = i
-      /* document.getElementById(i).style.background = "#91a9ec"
-      document.getElementsByClassName('user-details')[0].style.backgroundImage = "url('loader.gif')";
-      document.getElementsByClassName('user-details')[0].style.color= "rgb(189, 183, 228)" */
-
-      // document.getElementsByClassName('user-details')[0].innerHTML = "Loading..."
-      /* setTimeout(() => {
-        document.getElementsByClassName('user-details')[0].style.background = "rgb(189, 183, 228)"
-        document.getElementsByClassName('user-details')[0].style.color= "black"
-    }, 300) */
-      // document.getElementsByClassName('user-details')[0].style.animationDuration = "4s"
-      this.setState({displayDetails:true})
+    
+    selectUser(name, i) {
+      this.selectedUser = this.state.userList.find(
+        (ele) => ele["Display Name"] === name
+      );
+      this.selectedUser.id = i;
+      this.setState({ displayDetails: true });
     }
 
     addUser() {
@@ -137,26 +131,38 @@ class UserList extends React.Component{
   }
 
      render() {
+      const {
+        userList,
+        isData,
+        filtered,
+        isFilter,
+        editUser,
+        editUserId,
+        displayDetails,
+      } = this.state;
       return(
         <div>
           <input type="text" className="search-box" onChange={this.searchList} placeholder="Search..." />
           <div className="user-list">
-            {this.state.isData ? (this.state.isFilter ? 
-            this.state.filtered.map((user,index) => 
-            <UserItem user={user} id={index} selectUser={this.selectUser.bind(this)} 
-            deleteUser={this.deleteUser.bind(this)} editUser={this.editUser.bind(this)} 
-            editMode={this.state.editUser} editUserId={this.state.editUserId} 
-            updateUser={this.updateUser.bind(this)} />)  : 
-            this.state.userList.map((user,index) => 
-            <UserItem user={user} id={index} selectUser={this.selectUser.bind(this)}
-            deleteUser={this.deleteUser.bind(this)} editUser={this.editUser.bind(this)}
-            editMode={this.state.editUser} editUserId={this.state.editUserId} 
-            updateUser={this.updateUser.bind(this)} />)) : 
+            {isData ? 
+            (isFilter ? 
+            filtered.map((user,index) => 
+            <UserItem user={user} id={index} selectUser={this.selectUser} 
+            deleteUser={this.deleteUser} editUser={this.editUser} 
+            editMode={editUser} editUserId={editUserId} 
+            updateUser={this.updateUser} />)  : 
+
+            userList.map((user,index) => 
+            <UserItem user={user} id={index} selectUser={this.selectUser}
+            deleteUser={this.deleteUser} editUser={this.editUser}
+            editMode={editUser} editUserId={editUserId} 
+            updateUser={this.updateUser} />)) : 
+
             (<LoaderPercent />)}
             
-            <button onClick={this.addUser.bind(this)}> Add User </button>
+            <button onClick={this.addUser}> Add User </button>
         </div>
-          <UserDetails selectedUser={this.selectedUser} isShow={this.state.displayDetails} />
+          <UserDetails selectedUser={this.selectedUser} isShow={displayDetails} />
       </div>
       )
     }
