@@ -72,7 +72,11 @@ class UserList extends React.Component{
       this.selectedUser = this.state.userList.find(
         (ele) => ele["Display Name"] === name
       );
-      const content = document.querySelector('.content');
+      const content = document.querySelector('.user-details');
+      const overlay = document.getElementById('overlay');
+
+     
+
 
       // Reset the animation state
     content.classList.remove('show');
@@ -83,7 +87,8 @@ class UserList extends React.Component{
     
     setTimeout(() => {
       // Change the content here
-
+      content.style.display = 'block';
+      overlay.style.display = 'block';
       // Remove the 'hide' class and add the 'show' class to smoothly fade in the new content
       content.classList.remove('hide');
       content.classList.add('show');

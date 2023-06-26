@@ -10,6 +10,16 @@ class UserDetails extends React.Component {
         loading : true
       }
     }
+
+    closePopup() {
+      const content = document.querySelector('.user-details');
+      const overlay = document.getElementById('overlay');
+
+      content.style.display = 'none';
+      overlay.style.display = 'none';
+
+    }
+
     componentDidUpdate() {
       console.log("i am in componentDidUpdatethis.state.loading :" + this.state.loading)
       if (this.state.loading === true && this.props.isShow) {
@@ -29,7 +39,10 @@ class UserDetails extends React.Component {
     render() {
       console.log("i am in render")
       return (
+        <div id="overlay" class="overlay">
+
         <div className='user-details'>
+
           <div className="content">
           {this.props.isShow ? ((this.state.loading ? (<ul>Loading............</ul>) :
             (<ul> Selected User Details :
@@ -39,8 +52,10 @@ class UserDetails extends React.Component {
             <li>City: {this.props.selectedUser["Home City"]}</li>
             <li>Compny Name: {this.props.selectedUserOrganization}</li>
           </ul>))) : ( <ul>Selct user</ul>)}
-            </div> 
+            </div>
+            <button id="closePopup" onClick={this.closePopup}>Close</button> 
         </div> 
+        </div>
       )
   }
 }
