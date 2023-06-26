@@ -9,6 +9,7 @@ class UserList extends React.Component{
     constructor() {
       super();
       this.userDetails = null;
+      this.masterUserList = null;
       this.state = {
           userList : null,
           isData: false,
@@ -16,7 +17,8 @@ class UserList extends React.Component{
           filtered: null,
           isFilter: false,
           editUser : false,
-          editUserId : null
+          editUserId : null,
+          filteredList : null
           }
       this.selectUser = this.selectUser.bind(this);
       this.deleteUser = this.deleteUser.bind(this);
@@ -25,24 +27,19 @@ class UserList extends React.Component{
     }
   
     searchList = (e) => {
-      let currentList = [];
-      let newList = [];
+      const searchKey = e.target.value.toLowerCase();
+      const { userList } = this.state;
 
-      if (e.target.value !== "") {
-        currentList = this.state.userList;
-        newList = currentList.filter(item => {
-        const itemName = item["Display Name"].toLowerCase();
-        const searchKey = e.target.value.toLowerCase();
-        return itemName.includes(searchKey);
-        });
-      } else {
-        newList = this.state.userList;
-      }
+      const filteredList = searchKey
+        && userList.filter((item) =>
+            item["Display Name"].toLowerCase().includes(searchKey)
+          );
       this.setState({
-      filtered: newList,
-      isFilter: true
-    });
-}
+        isFilter: !!searchKey,
+        filteredList:  filteredList,
+      });
+    }
+    
     getUsers() {
       fetch('./ContactList/contacts_file.json')
         .then(response => response.json())
@@ -60,10 +57,6 @@ class UserList extends React.Component{
     }
 
     updateUser(user,id,updatedVal) {
-      // console.log("updated", user,id,updatedVal)
-      // this.editedUserIndex = this.state.userList.findIndex((ele) => ele["Display Name"] === user)
-      // this.state.userList[this.editedUserIndex]["Display Name"] = updatedVal
-      // this.setState({editUser: false, editUserId : null})
       const updatedUserList = [...this.state.userList];
       const editedUserIndex = updatedUserList.findIndex((ele) => ele["Display Name"] === user);
       updatedUserList[editedUserIndex]["Display Name"] = updatedVal;
@@ -79,8 +72,26 @@ class UserList extends React.Component{
       this.selectedUser = this.state.userList.find(
         (ele) => ele["Display Name"] === name
       );
+      const content = document.querySelector('.content');
+
+      // Reset the animation state
+    content.classList.remove('show');
+
+    // Add the 'hide' class to smoothly fade out the content
+    content.classList.add('hide');
+
+    
+    setTimeout(() => {
+      // Change the content here
+
+      // Remove the 'hide' class and add the 'show' class to smoothly fade in the new content
+      content.classList.remove('hide');
+      content.classList.add('show');
       this.selectedUser.id = i;
       this.setState({ displayDetails: true });
+    }, 200);
+
+     
     }
 
     addUser() {
@@ -134,29 +145,24 @@ class UserList extends React.Component{
       const {
         userList,
         isData,
-        filtered,
+        filteredList,
         isFilter,
         editUser,
         editUserId,
         displayDetails,
       } = this.state;
+
+      let userListToBeRendered = isFilter ? filteredList : userList;
       return(
-        <div>
+        <div className='user-list'>
           <input type="text" className="search-box" onChange={this.searchList} placeholder="Search..." />
           <div className="user-list">
             {isData ? 
-            (isFilter ? 
-            filtered.map((user,index) => 
-            <UserItem user={user} id={index} selectUser={this.selectUser} 
-            deleteUser={this.deleteUser} editUser={this.editUser} 
-            editMode={editUser} editUserId={editUserId} 
-            updateUser={this.updateUser} />)  : 
-
-            userList.map((user,index) => 
+            userListToBeRendered?.map((user,index) => 
             <UserItem user={user} id={index} selectUser={this.selectUser}
             deleteUser={this.deleteUser} editUser={this.editUser}
             editMode={editUser} editUserId={editUserId} 
-            updateUser={this.updateUser} />)) : 
+            updateUser={this.updateUser} />) : 
 
             (<LoaderPercent />)}
             

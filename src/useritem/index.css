@@ -8,6 +8,21 @@
     transition: 0.2s all; 
 }
 
+.user-item {
+  
+  justify-content: space-evenly;
+  flex-direction: column;
+  flex-wrap: wrap;
+  display: flex;
+}
+
+
+.user-item-row {
+  width : 100%;
+  display: flex;
+
+}
+
 .btn-ed {
   height: 30px;
   padding: 5px;
@@ -32,10 +47,14 @@
   background-color: rgb(189, 183, 228);
 }
 
-.col-id {
-  width: 1px;
-}
-
 tr:hover {
   background-color: rgb(189, 183, 228);
+}
+
+.name {
+  width: 20%;
+}
+
+.serialNumber, .delete, .edit {
+  width: 10%;
 }
